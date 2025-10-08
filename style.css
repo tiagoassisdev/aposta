@@ -24,6 +24,16 @@ body {
   margin-bottom: 30px;
 }
 
+.titulo-esportivo {
+  margin-left: -5px;
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+.header h1 {
+  color: hsl(273, 94%, 21%);
+}
+
 .header-logo {
   display: flex;
   align-items: center;
@@ -605,4 +615,5 @@ table {
     display: flex;
     gap: 10px;
 }
+
 
