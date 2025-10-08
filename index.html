@@ -763,6 +763,118 @@ function editBet(id) {
     submitBtn.textContent = 'ATUALIZAR APOSTA';
     submitBtn.style.background = '#ffa500';
 }
+
+      // SUBSTITUIR a função renderBets por esta versão com suporte a cards mobile
+function renderBets(betsToRender) {
+    const tbody = document.getElementById('betsBody');
+    
+    // Criar ou obter container de cards mobile
+    let cardsContainer = document.getElementById('betsCards');
+    if (!cardsContainer) {
+        cardsContainer = document.createElement('div');
+        cardsContainer.id = 'betsCards';
+        cardsContainer.className = 'bets-cards';
+        document.querySelector('.table-section').appendChild(cardsContainer);
+    }
+    
+    if (betsToRender.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty-state">
+                    <div>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        <h3>Nenhuma aposta encontrada</h3>
+                        <p>Tente ajustar os filtros ou adicione uma nova aposta</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        cardsContainer.innerHTML = `
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+                <h3>Nenhuma aposta encontrada</h3>
+                <p>Tente ajustar os filtros ou adicione uma nova aposta</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Renderizar tabela (desktop)
+    tbody.innerHTML = betsToRender.map(bet => {
+        const returnAmount = bet.status === 'ganhou' ? bet.stake * bet.odds : 0;
+        const profit = bet.status === 'ganhou' ? returnAmount - bet.stake : 
+                      bet.status === 'perdeu' ? -bet.stake : 0;
+        
+        return `
+            <tr>
+                <td>${new Date(bet.date + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                <td><strong>${bet.event}</strong></td>
+                <td>${bet.type}</td>
+                <td>${bet.odds.toFixed(2)}</td>
+                <td>R$ ${bet.stake.toFixed(2)}</td>
+                <td>R$ ${returnAmount.toFixed(2)}</td>
+                <td style="color: ${profit > 0 ? '#28a745' : profit < 0 ? '#dc3545' : '#aaa'}; font-weight: bold;">
+                    ${profit > 0 ? '+' : ''}R$ ${profit.toFixed(2)}
+                </td>
+                <td><span class="status ${bet.status}">${bet.status.charAt(0).toUpperCase() + bet.status.slice(1)}</span></td>
+                <td class="actions">
+                    <button class="btn btn-small btn-success" onclick="editBet(${bet.id})">Editar</button>
+                    <button class="btn btn-small btn-delete" onclick="deleteBet(${bet.id})">Excluir</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    // Renderizar cards (mobile)
+    cardsContainer.innerHTML = betsToRender.map(bet => {
+        const returnAmount = bet.status === 'ganhou' ? bet.stake * bet.odds : 0;
+        const profit = bet.status === 'ganhou' ? returnAmount - bet.stake : 
+                      bet.status === 'perdeu' ? -bet.stake : 0;
+        
+        return `
+            <div class="bet-card-mobile">
+                <div class="bet-header">
+                    <div class="bet-date">${new Date(bet.date + 'T00:00:00').toLocaleDateString('pt-BR')}</div>
+                    <span class="status ${bet.status}">${bet.status.charAt(0).toUpperCase() + bet.status.slice(1)}</span>
+                </div>
+                <div class="bet-event">${bet.event}</div>
+                <div class="bet-details">
+                    <div class="bet-detail-item">
+                        <span class="bet-detail-label">Tipo</span>
+                        <span class="bet-detail-value">${bet.type}</span>
+                    </div>
+                    <div class="bet-detail-item">
+                        <span class="bet-detail-label">Odd</span>
+                        <span class="bet-detail-value">${bet.odds.toFixed(2)}</span>
+                    </div>
+                    <div class="bet-detail-item">
+                        <span class="bet-detail-label">Valor</span>
+                        <span class="bet-detail-value">R$ ${bet.stake.toFixed(2)}</span>
+                    </div>
+                    <div class="bet-detail-item">
+                        <span class="bet-detail-label">Retorno</span>
+                        <span class="bet-detail-value">R$ ${returnAmount.toFixed(2)}</span>
+                    </div>
+                    <div class="bet-detail-item">
+                        <span class="bet-detail-label">Lucro/Perda</span>
+                        <span class="bet-detail-value" style="color: ${profit > 0 ? '#28a745' : profit < 0 ? '#dc3545' : '#aaa'};">
+                            ${profit > 0 ? '+' : ''}R$ ${profit.toFixed(2)}
+                        </span>
+                    </div>
+                </div>
+                <div class="bet-actions">
+                    <button class="btn btn-small btn-success" onclick="editBet(${bet.id})" style="flex: 1;">Editar</button>
+                    <button class="btn btn-small btn-delete" onclick="deleteBet(${bet.id})" style="flex: 1;">Excluir</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
     </script>
   </body>
 </html>
+
