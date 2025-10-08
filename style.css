@@ -402,3 +402,207 @@ select option {
     grid-template-columns: 1fr;
   }
 }
+
+/* ADICIONAR/SUBSTITUIR estas regras CSS */
+
+.table-section {
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 10px;
+    overflow-x: auto;
+    border: 2px solid #006400;
+}
+
+/* Esconder a scrollbar mas manter funcionalidade */
+.table-section::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-section::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.table-section::-webkit-scrollbar-thumb {
+    background: #006400;
+    border-radius: 10px;
+}
+
+.table-section::-webkit-scrollbar-thumb:hover {
+    background: #008000;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px; /* Garante que a tabela não quebre em telas pequenas */
+}
+
+@media (max-width: 1200px) {
+    table {
+        font-size: 0.95em;
+    }
+    
+    th, td {
+        padding: 12px 10px;
+    }
+}
+
+@media (max-width: 992px) {
+    table {
+        font-size: 0.9em;
+        min-width: 800px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+    }
+    
+    .btn-small {
+        padding: 4px 12px;
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-section {
+        padding: 20px 15px;
+        margin-left: -10px;
+        margin-right: -10px;
+        border-radius: 0;
+    }
+    
+    table {
+        font-size: 0.85em;
+        min-width: 750px;
+    }
+    
+    th, td {
+        padding: 10px 6px;
+        white-space: nowrap;
+    }
+    
+    /* Tornar colunas específicas menores em mobile */
+    th:nth-child(4), td:nth-child(4), /* ODD */
+    th:nth-child(5), td:nth-child(5), /* VALOR */
+    th:nth-child(6), td:nth-child(6) { /* RETORNO */
+        font-size: 0.9em;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .btn-small {
+        padding: 6px 10px;
+        font-size: 0.8em;
+        width: 100%;
+    }
+    
+    /* Adicionar indicador de scroll horizontal */
+    .table-section::after {
+        content: '← Deslize para ver mais →';
+        display: block;
+        text-align: center;
+        color: #ffd700;
+        font-size: 0.85em;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 0.8em;
+        min-width: 700px;
+    }
+    
+    th, td {
+        padding: 8px 5px;
+    }
+    
+    .stat-card .value {
+        font-size: 1.5em;
+    }
+    
+    .stat-card h3 {
+        font-size: 0.8em;
+    }
+}
+
+/* Layout alternativo para mobile - Cards ao invés de tabela */
+@media (max-width: 576px) {
+    /* Esconder tabela tradicional em telas muito pequenas */
+    .table-wrapper {
+        display: none;
+    }
+    
+    /* Mostrar cards */
+    .bets-cards {
+        display: block !important;
+    }
+}
+
+/* Cards para mobile (ADICIONAR este HTML e JS também) */
+.bets-cards {
+    display: none;
+}
+
+.bet-card-mobile {
+    background: #1a1a1a;
+    border: 2px solid #006400;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.bet-card-mobile .bet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.bet-card-mobile .bet-date {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.bet-card-mobile .bet-event {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.bet-card-mobile .bet-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.bet-card-mobile .bet-detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.bet-card-mobile .bet-detail-label {
+    color: #ffd700;
+    font-size: 0.85em;
+    margin-bottom: 3px;
+}
+
+.bet-card-mobile .bet-detail-value {
+    color: #fff;
+    font-weight: bold;
+}
+
+.bet-card-mobile .bet-actions {
+    display: flex;
+    gap: 10px;
+}
+
